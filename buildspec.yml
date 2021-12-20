@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: danilo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: danilo
+  template:
+    metadata:
+      labels:
+        app: danilo
+    spec:
+      containers:
+        - name: flask
+          image: sdann26/danilo-docker-demo:danilo-docker-demo
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: danilo
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: danilo
